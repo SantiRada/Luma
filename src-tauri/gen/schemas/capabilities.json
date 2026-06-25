@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Default permissions for LUMA launcher","local":true,"windows":["main","copy-color-overlay","luma-action-luma-action-extract-text"],"permissions":["core:default","core:event:default","core:window:default"]}}

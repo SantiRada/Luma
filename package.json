@@ -1,0 +1,33 @@
+{
+  "name": "luma",
+  "version": "0.1.0",
+  "description": "Minimal desktop launcher for LUMA Actions.",
+  "scripts": {
+    "start": "node scripts/start.js",
+    "dev": "tauri dev",
+    "tauri:dev": "tauri dev",
+    "native:build": "cargo build --manifest-path src-tauri/Cargo.toml",
+    "tauri:build": "tauri build",
+    "action:validate": "node scripts/lm/validate-action.js",
+    "action:pack": "node scripts/lm/pack-action.js",
+    "check": "node scripts/check.js"
+  },
+  "keywords": [
+    "desktop",
+    "launcher",
+    "luma",
+    "lm"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "@fluentui/svg-icons": "^1.1.330",
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/cli": "^2.11.3",
+    "adm-zip": "^0.5.17"
+  },
+  "devDependencies": {
+    "tesseract.js": "^7.0.0"
+  }
+}

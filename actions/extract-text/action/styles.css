@@ -1,0 +1,69 @@
+:root {
+  color-scheme: dark;
+  --panel: rgba(28, 28, 28, 0.96);
+  --ink: #ffffff;
+  --muted: rgba(255, 255, 255, 0.68);
+  --line: rgba(255, 255, 255, 0.82);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#overlay {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.001);
+  user-select: none;
+  pointer-events: none;
+  cursor: crosshair;
+}
+
+body.is-active,
+body.is-active #overlay {
+  pointer-events: auto;
+}
+
+body {
+  font-family: "DM Sans", "Inter", "Segoe UI", sans-serif;
+}
+
+#selection {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: none;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 0 9999px rgba(0, 0, 0, 0.28),
+    0 8px 30px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+}
+
+#hint {
+  position: fixed;
+  left: 50%;
+  top: 28px;
+  min-width: 166px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  padding: 11px 14px;
+  text-align: center;
+  pointer-events: none;
+}
+
+#capture {
+  display: none;
+}

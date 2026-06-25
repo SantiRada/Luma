@@ -1,0 +1,101 @@
+:root {
+  color-scheme: dark;
+  --panel: rgba(38, 38, 38, 0.96);
+  --ink: #ffffff;
+  --muted: rgba(255, 255, 255, 0.68);
+  --line: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#overlay {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.001);
+  user-select: none;
+  pointer-events: auto;
+}
+
+body {
+  font-family: "DM Sans", "Inter", "Segoe UI", sans-serif;
+}
+
+#loupe {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  width: 262px;
+  min-height: 76px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
+  padding: 10px;
+  pointer-events: none;
+  transform: translate3d(24px, 18px, 0);
+  z-index: 1;
+}
+
+
+#grid {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  border-radius: 6px;
+  background: #111111;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.pixel {
+  width: 100%;
+  height: 100%;
+}
+
+.pixel.center {
+  box-shadow: inset 0 0 0 1px #ffffff, inset 0 0 0 2px #111111;
+  z-index: 1;
+}
+
+.copy {
+  display: grid;
+  gap: 6px;
+  color: var(--ink);
+}
+
+.hex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#swatch {
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+#hex {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}

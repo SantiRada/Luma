@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.copy-color",
+  "name": "Copiar color",
+  "description": "Activa un gotero y copia el color HEX seleccionado en pantalla.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "runtime": {
+    "type": "window",
+    "entry": "action/index.html",
+    "width": 420,
+    "height": 300
+  },
+  "permissions": ["screen:read", "clipboard:write"],
+  "tags": ["color", "eyedropper", "clipboard", "hex"]
+}

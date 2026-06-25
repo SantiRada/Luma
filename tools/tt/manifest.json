@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.tt",
+  "name": "TT",
+  "description": "Transcribe y traduce lo que el usuario diga al microfono.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["microphone", "transcription", "translation"],
+  "permissions": ["microphone", "clipboard:write", "network"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

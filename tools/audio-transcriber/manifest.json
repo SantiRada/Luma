@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.audio-transcriber",
+  "name": "Transcribir audio",
+  "description": "Escucha el audio del dispositivo y genera una transcripcion de texto.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["audio", "transcription", "system-audio"],
+  "permissions": ["audio:system", "clipboard:write"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

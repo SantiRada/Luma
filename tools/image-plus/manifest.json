@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.image-plus",
+  "name": "Image Plus",
+  "description": "Convierte imagenes locales entre png, jpg, jpeg, ico, webp y otros formatos.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["image", "converter", "files"],
+  "permissions": ["files:read", "files:write"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

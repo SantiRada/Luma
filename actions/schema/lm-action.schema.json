@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://santiagorada.com/luma/schemas/lm-action.schema.json",
+  "title": "LUMA Action Manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "description",
+    "version",
+    "runtime",
+    "permissions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^luma\\.action\\.[a-z0-9][a-z0-9.-]*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 48
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 140
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "author": {
+      "type": "string",
+      "default": ""
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["type", "entry"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["window", "overlay", "background"]
+        },
+        "entry": {
+          "type": "string",
+          "pattern": "^action\\/"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 280,
+          "maximum": 1200
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 180,
+          "maximum": 900
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "clipboard:read",
+          "clipboard:write",
+          "screen:read",
+          "screen:overlay",
+          "microphone",
+          "audio:system",
+          "files:read",
+          "files:write",
+          "network"
+        ]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      }
+    },
+    "icon": {
+      "type": "string"
+    },
+    "store": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

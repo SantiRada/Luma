@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.image-translator",
+  "name": "Traductor de imagenes",
+  "description": "Lee una imagen del portapapeles, detecta texto y lo traduce entre idiomas.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["ocr", "translation", "clipboard", "image"],
+  "permissions": ["clipboard:read", "clipboard:write", "network"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.extract-text",
+  "name": "Extract Text",
+  "description": "Extrae texto de un fragmento seleccionado en pantalla mediante OCR.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "runtime": {
+    "type": "overlay",
+    "entry": "action/index.html"
+  },
+  "permissions": ["screen:read", "screen:overlay", "clipboard:write"],
+  "tags": ["ocr", "text", "screen", "clipboard"]
+}

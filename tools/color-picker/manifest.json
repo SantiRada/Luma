@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.color-picker",
+  "name": "Copiar color",
+  "description": "Activa un gotero para copiar el color HEX de cualquier punto visible en pantalla.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["color", "eyedropper", "clipboard"],
+  "permissions": ["screen:read", "clipboard:write"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

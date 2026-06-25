@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.video-downloader",
+  "name": "Video Downloader",
+  "description": "Recibe un link de video, permite elegir calidad y descarga video, audio o ambos.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["video", "download", "youtube", "social"],
+  "permissions": ["network", "files:write"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

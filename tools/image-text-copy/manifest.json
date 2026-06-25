@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.image-text-copy",
+  "name": "Copiar de imagenes",
+  "description": "Permite marcar un area sobre una imagen copiada y extraer el texto de ese fragmento.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["ocr", "selection", "clipboard", "image"],
+  "permissions": ["clipboard:read", "clipboard:write", "screen:overlay"],
+  "entry": {
+    "type": "placeholder"
+  }
+}

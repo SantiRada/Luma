@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMA</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="launcher" aria-label="LUMA launcher">
+      <section class="surface">
+        <div class="search-row">
+          <input id="search" type="search" placeholder="Buscar Action" autocomplete="off" autofocus />
+          <button id="install" title="Instalar .lm" aria-label="Instalar Action">
+            <span class="fluent-icon add-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div id="list" class="tool-list" role="listbox" aria-label="Actions"></div>
+        <p id="message" class="message" aria-live="polite"></p>
+      </section>
+    </main>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

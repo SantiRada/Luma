@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "LUMA.audio-plus",
+  "name": "Audio Plus",
+  "description": "Convierte archivos de audio entre mp3, wav, ogg y otros formatos.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "status": "concept",
+  "tags": ["audio", "converter", "files"],
+  "permissions": ["files:read", "files:write"],
+  "entry": {
+    "type": "placeholder"
+  }
+}
