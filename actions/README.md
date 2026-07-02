@@ -1,48 +1,26 @@
 # LUMA Actions
 
-Actions are the extension unit for LUMA.
+Una Action es la unidad instalable de LUMA: una mini app enfocada en una sola tarea, descubierta por el launcher y ejecutada desde el escritorio.
 
-An Action is not an app, not a tool, and not a plugin. It is a focused capability that LUMA can discover, show in the launcher, and execute.
+Las Actions compiladas usan extensión `.lm`. Un `.lm` es un archivo ZIP con `manifest.json` en la raíz y los archivos de ejecución dentro de `action/`.
 
-Compiled Actions use the `.lm` extension.
+## Crear una Action
 
-## Source Structure
-
-Each Action starts as a folder with this structure:
+Estructura mínima:
 
 ```text
 my-action/
   manifest.json
+  README.md
   action/
     index.html
-    action.js
     styles.css
+    action.js
 ```
 
-The `manifest.json` file is the contract. The `action/` folder contains the Action runtime files.
+Puedes partir desde `actions/template`.
 
-## Bundle Structure
-
-A `.lm` file is a zip archive with a required root manifest:
-
-```text
-my-action-1.0.0.lm
-  manifest.json
-  action/
-    index.html
-    action.js
-    styles.css
-```
-
-LUMA will install and execute Actions from this bundle format.
-
-## Installing
-
-Use the `+` button in LUMA and select a `.lm` file. LUMA extracts the Action into the user data folder and runs it from the desktop app, not from a browser.
-
-## Manifest
-
-Minimum manifest:
+## Manifest mínimo
 
 ```json
 {
@@ -54,24 +32,39 @@ Minimum manifest:
   "author": "LUMA",
   "runtime": {
     "type": "window",
-    "entry": "action/index.html"
+    "entry": "action/index.html",
+    "width": 520,
+    "height": 360
   },
   "permissions": [],
+  "components": [],
   "tags": ["example"]
 }
 ```
 
-## Runtime Types
+Reglas principales:
 
-- `window`: opens a compact Action-owned UI.
-- `overlay`: opens a transparent screen overlay.
-- `background`: runs without visible UI.
+- `schemaVersion` debe ser `1.0.0`.
+- `id` debe empezar con `luma.action.` y mantenerse estable para futuras versiones.
+- `version` usa semver, por ejemplo `0.1.0`.
+- `runtime.entry` debe apuntar a un archivo dentro de `action/`.
+- `permissions` es obligatorio aunque esté vacío.
+- `components` se declara solo si la Action necesita un Component compartido.
 
-The first Actions should use `window` unless they truly need an overlay or background execution.
+## Runtime
 
-## Permissions
+- `window`: ventana compacta con UI propia. Es el punto de partida recomendado.
+- `overlay`: capa transparente sobre la pantalla. Úsalo para selección visual o lectura de pantalla.
+- `background`: reservado para ejecución sin UI visible. El schema lo acepta, pero LUMA todavía no lo abre como runtime productivo.
 
-Actions must request only the permissions they need:
+Tamaños permitidos para `window`:
+
+- `width`: 280 a 1200.
+- `height`: 180 a 900.
+
+## Permisos
+
+Permisos soportados:
 
 - `clipboard:read`
 - `clipboard:write`
@@ -83,31 +76,87 @@ Actions must request only the permissions they need:
 - `files:write`
 - `network`
 
-## UI Guidelines
+Declara solo los permisos necesarios.
 
-- Keep the Action focused on one job.
-- Avoid onboarding copy inside the UI.
-- Prefer one compact panel over multi-screen flows.
-- Use the LUMA dark, minimal visual language.
-- Use native controls where possible.
-- Return a result quickly and make copy/export obvious.
+## Components
 
-## Commands
+Los Components son capacidades compartidas que LUMA puede instalar y precargar una vez para varias Actions.
 
-Validate an Action:
+Component disponible:
 
-```bash
-npm run action:validate -- actions/template
+- `luma.component.ocr`: OCR compartido para extraer texto desde imágenes o regiones de pantalla.
+
+Ejemplo:
+
+```json
+{
+  "components": ["luma.component.ocr"],
+  "permissions": ["screen:read", "screen:overlay", "clipboard:write"]
+}
 ```
 
-Compile an Action into `.lm`:
+## API disponible
 
-```bash
-npm run action:pack -- actions/template
+Las Actions corren en una ventana Tauri y pueden usar APIs expuestas por LUMA:
+
+```js
+const { invoke } = window.__TAURI__.core;
+const { listen } = window.__TAURI__.event;
+const currentWindow = window.__TAURI__.window.getCurrentWindow();
 ```
 
-Custom output:
+Comandos actuales:
+
+- `hide_current_window`: oculta la ventana actual.
+- `get_virtual_screen_bounds`: devuelve `{ x, y, width, height }` para overlays multi-monitor.
+- `extract_text_from_screen_region`: recibe `{ x, y, width, height }`, ejecuta OCR y copia el texto al portapapeles.
+- `ocr_screen_region`: recibe `{ x, y, width, height }` y devuelve texto. Actualmente implementado en Windows.
+
+Eventos de overlay:
+
+- `luma-overlay-start`: payload `{ x, y }`.
+- `luma-native-selection`: payload `{ x, y, width, height, done, cancel }`.
+
+## Validar
 
 ```bash
-npm run action:pack -- actions/template dist/actions/example.lm
+npm run action:validate -- actions/my-action
 ```
+
+## Compilar
+
+```bash
+npm run action:pack -- actions/my-action
+```
+
+Con salida personalizada:
+
+```bash
+npm run action:pack -- actions/my-action dist/actions/my-action.lm
+```
+
+También puedes usar la web en `web/compiler.php`: arrastras la carpeta, generas el `.lm` y eliges si descargarlo o publicarlo.
+
+## Instalar y actualizar
+
+Instala una Action desde LUMA con el botón `+` y selecciona el `.lm`.
+
+Regla de actualización:
+
+- `id` nuevo: LUMA instala una nueva Action.
+- mismo `id` y distinta `version`: LUMA actualiza la Action anterior.
+- mismo `id` y misma `version`: LUMA rechaza la instalación porque ya está instalada.
+
+Para publicar una nueva versión, conserva el `id` y cambia `version`.
+
+## Checklist
+
+- El manifest valida contra `actions/schema/lm-action.schema.json`.
+- `runtime.entry` existe dentro de `action/`.
+- La Action abre directo en la tarea.
+- Los permisos son mínimos.
+- Los Components declarados se usan realmente.
+- El paquete no incluye archivos pesados o sin uso.
+- Escape cancela overlays o flujos de selección.
+- La versión cambió si es una actualización.
+- El `.lm` fue probado instalándolo desde LUMA.

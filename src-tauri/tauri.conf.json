@@ -36,6 +36,76 @@
         "alwaysOnTop": true,
         "skipTaskbar": true,
         "shadow": false
+      },
+      {
+        "label": "luma-translate-this",
+        "title": "Translate This",
+        "url": "translate-this.html",
+        "width": 520,
+        "height": 420,
+        "visible": false,
+        "decorations": true,
+        "resizable": false,
+        "transparent": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": false,
+        "center": true
+      },
+      {
+        "label": "luma-contar-caracteres",
+        "title": "ContarCaracteres",
+        "url": "contar-caracteres.html",
+        "width": 520,
+        "height": 430,
+        "visible": false,
+        "decorations": true,
+        "resizable": false,
+        "transparent": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": false,
+        "center": true
+      },
+      {
+        "label": "luma-merge-pdf",
+        "title": "Merge PDF",
+        "url": "merge-pdf.html",
+        "width": 540,
+        "height": 460,
+        "visible": false,
+        "decorations": true,
+        "resizable": false,
+        "transparent": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": false,
+        "center": true
+      },
+      {
+        "label": "luma-image-convert",
+        "title": "Image Convert",
+        "url": "image-convert.html",
+        "width": 560,
+        "height": 520,
+        "visible": false,
+        "decorations": true,
+        "resizable": false,
+        "transparent": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": false,
+        "center": true
+      },
+      {
+        "label": "luma-video-downloader",
+        "title": "Video Downloader",
+        "url": "video-downloader.html",
+        "width": 560,
+        "height": 500,
+        "visible": false,
+        "decorations": true,
+        "resizable": false,
+        "transparent": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": false,
+        "center": true
       }
     ],
     "security": {
@@ -44,12 +114,28 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis"],
+    "resources": ["../components"],
     "icon": [
+      "icons/icon.png",
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/256x256.png",
       "icons/icon.ico"
-    ]
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "offlineInstaller",
+        "silent": true
+      },
+      "allowDowngrades": false,
+      "nsis": {
+        "installMode": "both",
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico",
+        "installerHooks": "installer-hooks.nsh",
+        "languages": ["Spanish", "English"]
+      }
+    }
   }
 }

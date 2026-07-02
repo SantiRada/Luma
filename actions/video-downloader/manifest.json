@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.video-downloader",
+  "name": "Video Downloader",
+  "description": "Descarga videos desde enlaces compatibles.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "runtime": {
+    "type": "window",
+    "entry": "action/index.html",
+    "width": 560,
+    "height": 500
+  },
+  "permissions": ["network", "files:write"],
+  "components": ["luma.component.video-downloader"],
+  "tags": ["video", "descarga", "redes"]
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Downloader</title>
+    <link rel="stylesheet" href="./video-downloader.css" />
+  </head>
+  <body>
+    <main class="video-downloader" aria-label="Video Downloader">
+      <header>
+        <div>
+          <p>Video Downloader</p>
+          <h1>Descargar video</h1>
+        </div>
+        <button id="close" class="icon-button" type="button" aria-label="Cerrar">&times;</button>
+      </header>
+
+      <label class="url-field">
+        <span>Enlace</span>
+        <input id="url" type="url" placeholder="Pega un enlace compatible" spellcheck="false" autofocus />
+      </label>
+
+      <section id="preview" class="preview empty" aria-live="polite">
+        <div id="platformIcon" class="platform-icon">?</div>
+        <div>
+          <strong id="videoTitle">Esperando enlace</strong>
+          <span id="platformLabel">El preview aparecerá al detectar el video.</span>
+        </div>
+      </section>
+
+      <section class="settings">
+        <label>
+          <span>Calidad</span>
+          <select id="quality" disabled>
+            <option value="best">Mejor calidad</option>
+          </select>
+        </label>
+        <button id="download" type="button" disabled>Descargar</button>
+      </section>
+
+      <p id="status"></p>
+    </main>
+
+    <script src="./video-downloader.js"></script>
+  </body>
+</html>

@@ -5,8 +5,7 @@ const currentWindow = window.__TAURI__.window.getCurrentWindow();
 const overlay = document.querySelector('#overlay');
 const selection = document.querySelector('#selection');
 const hint = document.querySelector('#hint');
-const canvas = document.querySelector('#capture');
-const context = canvas.getContext('2d', { willReadFrequently: true });
+const useNativeSelection = true;
 
 let active = false;
 let dragging = false;
@@ -16,8 +15,7 @@ let startX = 0;
 let startY = 0;
 let currentX = 0;
 let currentY = 0;
-let tesseractPromise = null;
-let workerPromise = null;
+let boundsPromise = null;
 
 function setHint(text) {
   hint.textContent = text;
@@ -30,7 +28,8 @@ function drawSelection() {
   const height = Math.abs(currentY - startY);
 
   selection.style.display = width > 2 && height > 2 ? 'block' : 'none';
-  selection.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  selection.style.left = `${x}px`;
+  selection.style.top = `${y}px`;
   selection.style.width = `${width}px`;
   selection.style.height = `${height}px`;
 }
@@ -45,52 +44,94 @@ function setActive(nextActive) {
   document.body.classList.toggle('is-active', nextActive);
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => window.setTimeout(resolve, ms));
+function withTimeout(promise, ms, message) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      window.setTimeout(() => reject(new Error(message)), ms);
+    }),
+  ]);
 }
 
-function loadTesseract() {
-  if (window.Tesseract) return Promise.resolve(window.Tesseract);
+async function hideOverlay() {
+  try {
+    await withTimeout(invoke('hide_current_window'), 700, 'Overlay hide timed out.');
+  } catch (_error) {
+    await withTimeout(currentWindow.hide(), 700, 'Overlay hide timed out.');
+  }
+}
 
-  if (!tesseractPromise) {
-    tesseractPromise = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = './vendor/tesseract.min.js';
-      script.onload = () => resolve(window.Tesseract);
-      script.onerror = () => reject(new Error('OCR runtime not found.'));
-      document.head.appendChild(script);
-    });
+function applyBounds(bounds) {
+  if (!bounds) return;
+  originX = Number(bounds.x) || 0;
+  originY = Number(bounds.y) || 0;
+}
+
+function refreshBounds() {
+  if (!boundsPromise) {
+    boundsPromise = invoke('get_virtual_screen_bounds')
+      .then(applyBounds)
+      .finally(() => {
+        boundsPromise = null;
+      });
   }
 
-  return tesseractPromise;
+  return boundsPromise;
 }
 
-async function getWorker() {
-  if (!workerPromise) {
-    const TesseractRuntime = await loadTesseract();
-    workerPromise = TesseractRuntime.createWorker('eng', 1, {
-      workerPath: './vendor/worker.min.js',
-      corePath: './vendor/tesseract-core.wasm.js',
-      langPath: './vendor/lang-data',
-      gzip: false,
-      workerBlobURL: false,
-      logger: (message) => {
-        if (message.status === 'recognizing text' && typeof message.progress === 'number') {
-          setHint(`Reading ${Math.round(message.progress * 100)}%`);
-        }
-      },
-    });
+function beginDrag(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  if (typeof event.pointerId === 'number') {
+    overlay.setPointerCapture(event.pointerId);
+  }
+  dragging = true;
+  startX = event.clientX;
+  startY = event.clientY;
+  currentX = startX;
+  currentY = startY;
+  setHint('Release to extract');
+  drawSelection();
+}
+
+function finishDrag(event) {
+  if (!active || !dragging) return;
+
+  event?.preventDefault?.();
+  event?.stopPropagation?.();
+
+  if (typeof event?.clientX === 'number') {
+    currentX = event.clientX;
+    currentY = event.clientY;
   }
 
-  return workerPromise;
+  extractSelection().catch(() => cancel());
 }
 
-function captureToCanvas(capture) {
-  canvas.width = capture.width;
-  canvas.height = capture.height;
-  const pixels = new Uint8ClampedArray(capture.pixels);
-  context.putImageData(new ImageData(pixels, capture.width, capture.height), 0, 0);
-  return canvas;
+function updateNativeSelection(nativeSelection) {
+  if (!nativeSelection) return;
+
+  if (nativeSelection.cancel) {
+    cancel();
+    return;
+  }
+
+  if (!active) {
+    setActive(true);
+  }
+
+  dragging = !nativeSelection.done;
+  selection.style.display = nativeSelection.width > 2 && nativeSelection.height > 2 ? 'block' : 'none';
+  selection.style.left = `${nativeSelection.x}px`;
+  selection.style.top = `${nativeSelection.y}px`;
+  selection.style.width = `${nativeSelection.width}px`;
+  selection.style.height = `${nativeSelection.height}px`;
+  setHint(nativeSelection.done ? 'Extracting...' : 'Release to extract');
+
+  if (nativeSelection.done) {
+    setActive(false);
+    resetSelection();
+  }
 }
 
 async function extractSelection() {
@@ -107,49 +148,38 @@ async function extractSelection() {
 
   setActive(false);
   dragging = false;
-  setHint('Reading text...');
-  await currentWindow.hide();
-  await sleep(90);
+  hideOverlay().catch(() => {});
 
-  const capture = await invoke('capture_screen_region', {
+  const region = {
     x: Math.round(originX + left),
     y: Math.round(originY + top),
     width: Math.round(width),
     height: Math.round(height),
-  });
+  };
 
-  const worker = await getWorker();
-  const result = await worker.recognize(captureToCanvas(capture));
-  const text = (result?.data?.text || '').trim();
-
-  if (text) {
-    await invoke('write_clipboard_text', { text });
-  }
+  invoke('extract_text_from_screen_region', region).catch(() => {});
 }
 
 async function cancel() {
-  if (!active) return;
   setActive(false);
   resetSelection();
-  await currentWindow.hide();
+  await hideOverlay();
 }
 
 overlay.addEventListener('pointerdown', (event) => {
-  if (!active) return;
+  if (useNativeSelection) return;
+  if (typeof event.button === 'number' && event.button !== 0) return;
 
-  event.preventDefault();
-  event.stopPropagation();
-  overlay.setPointerCapture(event.pointerId);
-  dragging = true;
-  startX = event.clientX;
-  startY = event.clientY;
-  currentX = startX;
-  currentY = startY;
-  setHint('Release to extract');
-  drawSelection();
+  if (!active) {
+    start();
+  }
+
+  if (!active) return;
+  beginDrag(event);
 });
 
 overlay.addEventListener('pointermove', (event) => {
+  if (useNativeSelection) return;
   if (!active || !dragging) return;
 
   event.preventDefault();
@@ -157,17 +187,25 @@ overlay.addEventListener('pointermove', (event) => {
   currentX = event.clientX;
   currentY = event.clientY;
   drawSelection();
+
+  if (typeof event.buttons === 'number' && event.buttons === 0) {
+    finishDrag(event);
+  }
 });
 
 overlay.addEventListener('pointerup', (event) => {
-  if (!active || !dragging) return;
-
-  event.preventDefault();
-  event.stopPropagation();
-  currentX = event.clientX;
-  currentY = event.clientY;
-  extractSelection().catch(() => currentWindow.hide());
+  if (useNativeSelection) return;
+  finishDrag(event);
 });
+
+if (!useNativeSelection) {
+  overlay.addEventListener('pointercancel', finishDrag);
+  overlay.addEventListener('lostpointercapture', finishDrag);
+  document.addEventListener('pointerup', finishDrag, true);
+  document.addEventListener('mouseup', finishDrag, true);
+  window.addEventListener('pointerup', finishDrag, true);
+  window.addEventListener('mouseup', finishDrag, true);
+}
 
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
@@ -177,24 +215,30 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
-async function start(payload) {
-  try {
-    const bounds = payload || await invoke('get_virtual_screen_bounds');
-    originX = bounds.x || 0;
-    originY = bounds.y || 0;
-    setActive(true);
-    resetSelection();
-    setHint('Drag to select text');
-  } catch (_error) {
-    setActive(false);
-    await currentWindow.hide();
-  }
+function start(payload) {
+  applyBounds(payload);
+  setActive(true);
+  resetSelection();
+  setHint('Drag to select text');
+  refreshBounds().catch(() => {});
 }
 
 listen('luma-overlay-start', (event) => {
   start(event.payload);
 });
 
-window.setTimeout(() => {
-  if (!active) start();
-}, 50);
+listen('luma-native-selection', (event) => {
+  updateNativeSelection(event.payload);
+});
+
+window.addEventListener('focus', () => {
+  if (!active && document.visibilityState === 'visible') {
+    start();
+  }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (!active && document.visibilityState === 'visible') {
+    start();
+  }
+});

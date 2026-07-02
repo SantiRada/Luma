@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merge PDF</title>
+    <link rel="stylesheet" href="./merge-pdf.css" />
+  </head>
+  <body>
+    <main class="merge-pdf" aria-label="Merge PDF">
+      <header>
+        <div>
+          <p>Merge PDF</p>
+          <h1>Unir PDFs</h1>
+        </div>
+        <button id="close" class="icon-button" type="button" aria-label="Cerrar">&times;</button>
+      </header>
+
+      <button id="picker" class="picker" type="button">
+        <strong>Seleccionar PDF</strong>
+        <span id="pickerLabel">Elegí dos o más archivos para unirlos en un solo PDF.</span>
+      </button>
+
+      <section class="file-panel" aria-live="polite">
+        <div class="file-panel-head">
+          <span id="fileCount">0 archivos</span>
+          <button id="clear" type="button">Limpiar</button>
+        </div>
+        <ol id="fileList"></ol>
+      </section>
+
+      <footer>
+        <p id="status"></p>
+        <button id="export" type="button" disabled>Exportar</button>
+      </footer>
+    </main>
+
+    <script src="./merge-pdf.js"></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContarCaracteres</title>
+    <link rel="stylesheet" href="./contar-caracteres.css" />
+  </head>
+  <body>
+    <main class="counter" aria-label="ContarCaracteres">
+      <header>
+        <p>ContarCaracteres</p>
+        <button id="close" type="button" aria-label="Cerrar">&times;</button>
+      </header>
+
+      <textarea id="source" rows="3" spellcheck="true" autofocus></textarea>
+      <button id="count" type="button">Contar</button>
+
+      <section class="results" aria-live="polite">
+        <article>
+          <strong id="characters">0</strong>
+          <span>Caracteres</span>
+        </article>
+        <article>
+          <strong id="spaces">0</strong>
+          <span>Espacios</span>
+        </article>
+        <article>
+          <strong id="words">0</strong>
+          <span>Palabras</span>
+        </article>
+        <article>
+          <strong id="stanzas">0</strong>
+          <span>Estrofas</span>
+        </article>
+        <article>
+          <strong id="paragraphs">0</strong>
+          <span>Parrafos</span>
+        </article>
+      </section>
+
+      <p id="status"></p>
+    </main>
+
+    <script src="./contar-caracteres.js"></script>
+  </body>
+</html>

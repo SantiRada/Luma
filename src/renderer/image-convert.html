@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Convert</title>
+    <link rel="stylesheet" href="./image-convert.css" />
+  </head>
+  <body>
+    <main class="image-convert" aria-label="Image Convert">
+      <header>
+        <div>
+          <p>Image Convert</p>
+          <h1>Convertir imágenes</h1>
+        </div>
+        <button id="close" class="icon-button" type="button" aria-label="Cerrar">&times;</button>
+      </header>
+
+      <section class="source-mode">
+        <span>Archivo</span>
+        <label class="switch" aria-label="Usar carpeta como input">
+          <input id="folderMode" type="checkbox" />
+          <i></i>
+        </label>
+        <span>Carpeta</span>
+      </section>
+
+      <button id="picker" class="picker" type="button">
+        <strong id="pickerTitle">Seleccionar imagen</strong>
+        <span id="pickerLabel">Elegí una imagen para convertirla a otro formato.</span>
+      </button>
+
+      <section class="settings">
+        <label>
+          <span>Formato</span>
+          <select id="format">
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+            <option value="webp">WEBP</option>
+            <option value="ico">ICO</option>
+          </select>
+        </label>
+        <label>
+          <span>Prefijo opcional</span>
+          <input id="prefix" type="text" maxlength="80" placeholder="Ej: luma_" />
+        </label>
+      </section>
+
+      <section class="file-panel" aria-live="polite">
+        <div class="file-panel-head">
+          <span id="fileCount">0 imágenes</span>
+          <button id="clear" type="button">Limpiar</button>
+        </div>
+        <ol id="fileList"></ol>
+      </section>
+
+      <footer>
+        <p id="status"></p>
+        <button id="export" type="button" disabled>Exportar</button>
+      </footer>
+    </main>
+
+    <script src="./image-convert.js"></script>
+  </body>
+</html>

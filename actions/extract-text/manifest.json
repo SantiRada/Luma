@@ -3,7 +3,7 @@
   "id": "luma.action.extract-text",
   "name": "Extract Text",
   "description": "Extrae texto de un fragmento seleccionado en pantalla mediante OCR.",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "author": "LUMA",
   "runtime": {
     "type": "overlay",

@@ -80,6 +80,16 @@
         ]
       }
     },
+    "components": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "luma.component.ocr",
+          "luma.component.video-downloader"
+        ]
+      }
+    },
     "tags": {
       "type": "array",
       "uniqueItems": true,

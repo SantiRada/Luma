@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Translate Image</title>
+    <link rel="stylesheet" href="./styles.css?v=0.1.9" />
+  </head>
+  <body>
+    <main id="overlay" aria-label="Translate Image">
+      <div id="selection"></div>
+      <div id="hint">Arrastra para seleccionar texto</div>
+    </main>
+
+    <section id="panel" aria-live="polite">
+      <header>
+        <div>
+          <p id="eyebrow">Translate Image</p>
+          <h1 id="title">Traduciendo...</h1>
+        </div>
+        <button id="close" type="button" aria-label="Cerrar">&times;</button>
+      </header>
+      <pre id="translation">Preparando OCR...</pre>
+      <footer>
+        <p id="status">Detectando idioma y traduciendo a espa&ntilde;ol.</p>
+        <button id="copy" type="button" disabled>Copiar</button>
+      </footer>
+    </section>
+
+    <script src="./action.js?v=0.1.9"></script>
+  </body>
+</html>

@@ -3,7 +3,7 @@
   --panel: rgba(28, 28, 28, 0.96);
   --ink: #ffffff;
   --muted: rgba(255, 255, 255, 0.68);
-  --line: rgba(255, 255, 255, 0.82);
+  --line: #26d9ff;
 }
 
 * {
@@ -17,15 +17,9 @@ body,
   height: 100%;
   margin: 0;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.001);
+  background: rgba(0, 0, 0, 0.08);
   user-select: none;
-  pointer-events: none;
   cursor: crosshair;
-}
-
-body.is-active,
-body.is-active #overlay {
-  pointer-events: auto;
 }
 
 body {
@@ -37,11 +31,13 @@ body {
   left: 0;
   top: 0;
   display: none;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.08);
+  z-index: 20;
+  border: 2px solid var(--line);
+  background: rgba(38, 217, 255, 0.16);
   box-shadow:
-    0 0 0 9999px rgba(0, 0, 0, 0.28),
-    0 8px 30px rgba(0, 0, 0, 0.22);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 0 0 9999px rgba(0, 0, 0, 0.34),
+    0 0 24px rgba(38, 217, 255, 0.56);
   pointer-events: none;
 }
 
@@ -49,6 +45,7 @@ body {
   position: fixed;
   left: 50%;
   top: 28px;
+  z-index: 30;
   min-width: 166px;
   transform: translateX(-50%);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -62,8 +59,4 @@ body {
   padding: 11px 14px;
   text-align: center;
   pointer-events: none;
-}
-
-#capture {
-  display: none;
 }

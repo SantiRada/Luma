@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.contar-caracteres",
+  "name": "ContarCaracteres",
+  "description": "Cuenta caracteres, espacios, palabras, estrofas y parrafos de un texto.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "runtime": {
+    "type": "window",
+    "entry": "action/index.html",
+    "width": 520,
+    "height": 430
+  },
+  "permissions": [],
+  "tags": ["texto", "contador", "caracteres"]
+}

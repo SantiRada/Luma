@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.translate-image",
+  "name": "Translate Image",
+  "description": "Traduce a espanol el texto de una region seleccionada en pantalla.",
+  "version": "0.1.9",
+  "author": "LUMA",
+  "runtime": {
+    "type": "overlay",
+    "entry": "action/index.html"
+  },
+  "permissions": ["screen:read", "screen:overlay", "clipboard:write", "network"],
+  "tags": ["ocr", "translate", "image", "spanish"]
+}

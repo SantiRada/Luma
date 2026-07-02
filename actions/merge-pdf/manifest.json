@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.merge-pdf",
+  "name": "Merge PDF",
+  "description": "Une varios PDF en un solo archivo.",
+  "version": "0.1.0",
+  "author": "LUMA",
+  "runtime": {
+    "type": "window",
+    "entry": "action/index.html",
+    "width": 540,
+    "height": 460
+  },
+  "permissions": ["files:read", "files:write"],
+  "tags": ["pdf", "archivo", "merge"]
+}

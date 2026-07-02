@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Translate This</title>
+    <link rel="stylesheet" href="./translate-this.css" />
+  </head>
+  <body>
+    <main class="translator" aria-label="Translate This">
+      <header>
+        <p>Translate This</p>
+        <div class="window-actions">
+          <label class="language-picker" aria-label="Idioma de destino">
+            <select id="language">
+              <option value="en" selected>EN</option>
+              <option value="es">ES</option>
+              <option value="pt">PT</option>
+              <option value="fr">FR</option>
+              <option value="it">IT</option>
+              <option value="de">DE</option>
+              <option value="ja">JA</option>
+            </select>
+          </label>
+          <button id="close" type="button" aria-label="Cerrar">&times;</button>
+        </div>
+      </header>
+
+      <section class="workarea">
+        <textarea id="source" rows="3" maxlength="4000" spellcheck="true" autofocus></textarea>
+        <button id="translate" type="button">Traducir</button>
+        <output id="result" aria-live="polite"></output>
+      </section>
+
+      <p id="status" role="status"></p>
+    </main>
+
+    <script src="./translate-this.js"></script>
+  </body>
+</html>

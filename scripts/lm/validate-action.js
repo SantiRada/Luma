@@ -13,6 +13,11 @@ const allowedPermissions = new Set([
   'network',
 ]);
 
+const allowedComponents = new Set([
+  'luma.component.ocr',
+  'luma.component.video-downloader',
+]);
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -71,6 +76,18 @@ function validateAction(actionDir) {
   for (const permission of manifest.permissions) {
     if (!allowedPermissions.has(permission)) {
       fail(`Unsupported permission: ${permission}`);
+    }
+  }
+
+  if (manifest.components !== undefined) {
+    if (!Array.isArray(manifest.components)) {
+      fail('manifest.components must be an array when provided.');
+    }
+
+    for (const component of manifest.components) {
+      if (!allowedComponents.has(component)) {
+        fail(`Unsupported component: ${component}`);
+      }
     }
   }
 

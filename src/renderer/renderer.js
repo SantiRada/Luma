@@ -143,7 +143,7 @@ installButton.addEventListener('click', async () => {
   const installed = await invoke('install_tool');
   if (installed) {
     tools = await invoke('list_tools');
-    message.textContent = `${installed.name} instalada.`;
+    message.textContent = installed.message || `${installed.action?.name || 'Action'} instalada.`;
     render();
   }
 });

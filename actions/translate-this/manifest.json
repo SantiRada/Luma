@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "luma.action.translate-this",
+  "name": "Translate This",
+  "description": "Traduce texto escrito al idioma elegido con deteccion automatica del idioma original.",
+  "version": "0.1.1",
+  "author": "LUMA",
+  "runtime": {
+    "type": "window",
+    "entry": "action/index.html",
+    "width": 520,
+    "height": 420
+  },
+  "permissions": ["network", "clipboard:write"],
+  "tags": ["translate", "text", "language"]
+}
