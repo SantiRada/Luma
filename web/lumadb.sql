@@ -77,7 +77,7 @@ VALUES (
     '0.1.0',
     'Primera version publica de LUMA. Incluye launcher de escritorio, sistema de Actions, instalacion de paquetes .lm, componentes base, soporte para Translate Image, Translate This, ContarCaracteres, Merge PDF, Image Convert y Video Downloader, tray en segundo plano e inicio automatico con Windows. Las Actions se instalan por separado.',
     'versions/LUMA_0.1.0.exe',
-    230153053,
+    230156237,
     1
 )
 ON DUPLICATE KEY UPDATE

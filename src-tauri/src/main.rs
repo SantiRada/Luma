@@ -22,8 +22,8 @@ use std::os::windows::process::CommandExt;
 use tauri::{
   menu::{Menu, MenuItem, PredefinedMenuItem},
   tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-  AppHandle, Emitter, Manager, PhysicalPosition, PhysicalSize, Url, WebviewUrl, WebviewWindow,
-  WebviewWindowBuilder,
+  AppHandle, Emitter, LogicalSize, Manager, PhysicalPosition, PhysicalSize, Url, WebviewUrl,
+  WebviewWindow, WebviewWindowBuilder,
 };
 use tauri_plugin_global_shortcut::{
   Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState,
@@ -362,7 +362,12 @@ fn collect_actions(app: &AppHandle) -> Result<Vec<Action>, String> {
 }
 
 fn center_window_on_cursor(window: &WebviewWindow) -> tauri::Result<()> {
-  let size = window.outer_size()?;
+  const LAUNCHER_WIDTH: f64 = 560.0;
+  const LAUNCHER_HEIGHT: f64 = 460.0;
+
+  let scale_factor = window.scale_factor().unwrap_or(1.0);
+  let physical_width = (LAUNCHER_WIDTH * scale_factor).round() as i32;
+  let physical_height = (LAUNCHER_HEIGHT * scale_factor).round() as i32;
   let cursor = cursor_position().unwrap_or((0, 0));
   let monitors = window.available_monitors()?;
   let monitor = monitors
@@ -380,10 +385,10 @@ fn center_window_on_cursor(window: &WebviewWindow) -> tauri::Result<()> {
   if let Some(monitor) = monitor {
     let position = monitor.position();
     let monitor_size = monitor.size();
-    let x = position.x + ((monitor_size.width as i32 - size.width as i32) / 2);
-    let y = position.y + ((monitor_size.height as i32 - size.height as i32) / 2);
+    let x = position.x + ((monitor_size.width as i32 - physical_width) / 2);
+    let y = position.y + ((monitor_size.height as i32 - physical_height) / 2);
+    window.set_size(LogicalSize::new(LAUNCHER_WIDTH, LAUNCHER_HEIGHT))?;
     window.set_position(PhysicalPosition::new(x, y))?;
-    window.set_size(PhysicalSize::new(size.width, size.height))?;
   }
 
   Ok(())
